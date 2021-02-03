@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" >
+	
+<head th:fragment="head">
+	<link rel="stylesheet" href="/webjars/bootstrap/4.6.0/css/bootstrap.min.css">
+    <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+	<script src="/webjars/popper.js/2.5.4/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</head>
+
+<header th:fragment="header" class="mb-4">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/">
+			<img src="/images/logo.png" width="30" height="30" alt=""/>
+			CodeBook
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/code">CodeBook</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/board">FreeBoard</a>
+				</li>
+			</ul>
+			
+			<form class="form-inline my-2 my-lg-0" action="/user/login" method="POST" th:if="${ session.user == null }">
+				<input class="form-control mr-sm-2" type="text" placeholder="회원아이디" name="userid">
+				<input class="form-control mr-sm-2" type="password" placeholder="비밀번호" name="password">
+				<button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">로그인</button>
+				<a href="/user/register" class="btn btn-outline-info my-2 my-sm-0">회원가입</a>
+			</form>
+			
+			<div class="d-flex align-items-center" th:if="${ session.user != null }">
+				
+				<div class="d-flex align-items-center p-1 mr-2" style="border: 1px solid #333030; border-radius:0.25rem;">
+					<img th:src="${ session.user.img }" class="mr-1" style="height: 25px; width: 25px; object-fit:cover;">
+					<p th:text="${ session.user.name }" class="mb-0"></p>
+				</div>
+				
+				<div class="d-flex align-items-center p-1" style="min-width:80px; height: 35px;">
+					<p class="mb-0 d-flex align-items-center justify-content-center" style="border-top-left-radius:0.25rem; border-bottom-left-radius:0.25rem; background-color:#333030; color:#fff; width:50%; height:100%;">LV</p>
+					<p th:text="${ session.user.level }" class="mb-0 d-flex align-items-center justify-content-center" style="border-top-right-radius:0.25rem; border-bottom-right-radius:0.25rem; background-color:#22b8cf; color:#fff; width:50%; height:100%;"></p>
+				</div>
+				
+				<div class="d-flex align-items-center p-1 mr-2" style="min-width:100px; height: 35px;">
+					<p class="mb-0 d-flex align-items-center justify-content-center" style="border-top-left-radius:0.25rem; border-bottom-left-radius:0.25rem; background-color:#333030; color:#fff; width:50%; height:100%;">EXP</p>
+					<p th:text="${ session.user.exp }" class="mb-0 d-flex align-items-center justify-content-center" style="border-top-right-radius:0.25rem; border-bottom-right-radius:0.25rem; background-color:#22b8cf; color:#fff; width:50%; height:100%;"></p>
+				</div>
+				
+				<a class="nav-link btn btn-primary" href="/user/logout">로그아웃</a>
+				
+			</div>
+		</div>
+	</nav>
+</header>
+
+<footer class="bg-primary text-white fixed-bottom" th:fragment="footer">  
+	<div class="text-center py-3">© 2021 Copyright wotjd All rights Reserved.</div>
+</footer>
+
+</html>

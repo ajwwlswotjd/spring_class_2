@@ -1,0 +1,58 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+    version="3.1">
+    
+    <!-- 전체 환경에 대한 설정파일 설정 -->
+    <context-param>
+    	<param-name>contextConfigLocation</param-name>
+    	<param-value>/WEB-INF/spring/root-context.xml</param-value>
+    </context-param>
+    
+    <!-- 전체 환경에서 로드할 리스너 설정 -->
+    <listener>
+    	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    	
+    <!-- URI에 따라 라우팅을 담당할 디스패쳐를 서블릿으로 등록함. -->
+    <servlet>
+    	<servlet-name>dispatcher</servlet-name>
+    	<servlet-class>
+    		org.springframework.web.servlet.DispatcherServlet
+    	</servlet-class>
+    	
+    	<!-- 사용자가 지정한 환경설정 클래스들의 위치를 지정해줌. -->
+    	<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/spring/appServlet/servlet-context.xml
+			</param-value>
+		</init-param>
+    	
+    	<!-- 가장 첫번째로 로드되도록 만들어줌. -->
+    	<load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <!-- 서블릿을 /주소에 맵핑하여 모든 요청을 해당 서블릿이 받을 수 있도록 함. -->
+    <servlet-mapping>
+    	<servlet-name>dispatcher</servlet-name>
+    	<url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+  
+    <filter>
+    	<filter-name>encodingFilter</filter-name>
+    	<filter-class>
+    		org.springframework.web.filter.CharacterEncodingFilter
+    	</filter-class>
+    	<init-param>
+    		<param-name>encoding</param-name>
+    		<param-value>UTF-8</param-value>
+    	</init-param>
+    </filter>
+    <!-- 모든 url에 해당 인코딩 필터가 동작하도롱 맵핑 -->
+    <filter-mapping>
+    	<filter-name>encodingFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>

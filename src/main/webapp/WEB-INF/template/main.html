@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout :: head"></head>
+
+<body>
+
+	<header th:replace="fragments/layout :: header"></header>
+	
+	<div th:if="${ session.login_msg != null }">
+		<script> 
+			alert( `[[ ${session.login_msg} ]]` );
+		</script>
+		<div th:text="${#session.removeAttribute('login_msg')}"></div>
+	</div>
+	
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="display-4">양영디지털고 CodeBook!</h1>
+			<p class="lead">코드북은 우리가 일상생활에서 코드를 작성하면서 부딛혔던 문제들과 해결책을 공유하기 위해 올리는 공간입니다.</p>
+			<hr class="my-4">
+			<p>내가 고생하며 해결했던 일은 언젠가 다른 프로그래머에게도 고통으로 다가옵니다. 이를 도와줄 수 있는 사이트! Code Book입니다.</p>
+			<a class="btn btn-primary btn-lg" href="#" role="button">보러가기</a>
+		</div>
+	</div>
+	<footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>

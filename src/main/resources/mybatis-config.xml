@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 아직 환경설정은 작성할 것이 없으니 비워둡니다. -->	
+	<typeAliases>
+		<package name="net.gondr.domain"></package>
+	</typeAliases>
+	
+</configuration>

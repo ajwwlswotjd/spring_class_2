@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout :: head"></head>
+
+<body>
+	<header th:replace="fragments/layout :: header"></header>
+
+	<div class="container">
+		<div class="alert alert-danger">
+  			페이지에 에러가 발생하였습니다. 메인 페이지로 돌아가려면 <a href="/" class="alert-link">이 링크</a> 를 클릭하세요.
+		</div>
+		<div class="row d-flex justify-content-center flex-direction-column">
+			<img src="/images/error_img.png" style="width : 50%; height : auto; object-fit:cover;" />
+		</div>
+		<div class="alert alert-danger">
+		  <h4 class="alert-heading">에러 클래스</h4>
+		  <p th:text="${title}"></p>
+		  <hr>
+		  <h6 class="alert-heading">에러 메시지</h6>
+		  <p class="mb-0" th:text="${errorMsg}"></p>
+		</div>
+
+	</div>
+	<footer th:replace="fragments/layout :: footer"></footer>
+</body>
+</html>
