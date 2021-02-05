@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.gondr.mappers.BoardMapper">
+	<insert id="write">
+		INSERT INTO `spring_boards`(`title`, `content`, `writer`, `writeDate`) VALUES ( #{ title } , #{ content } , #{ writer } , NOW() )
+	</insert>
+	
+	<select id="list" resultType="BoardVO">
+		SELECT * FROM `spring_boards` ORDER BY `id` DESC LIMIT #{start}, #{end}
+	</select>
+	
+	<update id="update">
+		UPDATE `spring_boards` SET content = #{ content } , title = #{ title } WHERE id = #{ id }
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM `spring_boards` WHERE id = #{ id }
+	</delete>
+	
+	<select id="view" resultType="BoardVO">
+		SELECT * FROM `spring_boards` WHERE `id` = #{ id } 
+	</select>
+	
+	<select id="cnt" resultType="Integer">
+		SELECT count(*) FROM `spring_boards`
+	</select>
+</mapper>

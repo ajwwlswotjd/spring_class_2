@@ -5,6 +5,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +33,12 @@ public class UserController {
 		
 		session.removeAttribute("user");
 		return ("redirect:/");
+	}
+	
+	@GetMapping("login")
+	public String viewLoginPage(Model model) {
+		model.addAttribute("loginDTO", new LoginDTO());
+		return "user/login";
 	}
 	
 	@RequestMapping(value="login" , method=RequestMethod.POST)
@@ -86,7 +94,7 @@ public class UserController {
 		vo.setName( dto.getName() );
 		vo.setUserid( dto.getUserid() );
 		vo.setPassword( dto.getPassword() );
-		vo.setImg( uploadPath + "/" + upFile );
+		vo.setImg( upFile );
 		service.register(vo);
 		
 		return ("redirect:/");

@@ -5,7 +5,7 @@
 
 <mapper namespace="net.gondr.mappers.UserMapper">
 	<insert id="insertUser">
-		INSERT INTO spring_users (userid, name, password, exp, level, img) VALUES ( #{userid}, #{name}, PASSWORD(#{password}), 0, 1, #{img})
+		INSERT INTO spring_users (userid, name, password, exp, level, img)  VALUES ( #{userid}, #{name}, PASSWORD(#{password}), 0, 1, #{img})
 	</insert>
 	
 	<select id="selectUser" resultType="UserVO">
@@ -13,6 +13,15 @@
 	</select>
 	
 	<select id="loginUser" resultType="UserVO">
-		SELECT * FROM spring_users  WHERE userid = #{userid} AND password = PASSWORD(#{password})
+		SELECT * FROM spring_users 
+		WHERE userid = #{userid} AND password = PASSWORD(#{password})
 	</select>
+	
+	<update id="updateExp">
+		UPDATE spring_users SET exp = exp+5 WHERE userid = #{userid}		
+	</update>
+	
+	<update id="updateLevel">
+		UPDATE spring_users u , spring_level l  SET u.level = u.level+1 , u.exp = 0 WHERE u.level = l.level AND u.exp >= l.exp AND u.userid = #{userid};
+	</update>
 </mapper>

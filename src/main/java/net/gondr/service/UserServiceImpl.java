@@ -21,7 +21,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO login(String userid, String password) {
 		
-		return dao.loginUser(userid, password);
+		UserVO user = dao.loginUser(userid, password);
+		if(user != null) {
+			dao.updateExp(userid);
+			dao.updateLevel(userid);
+			user = dao.getUser(userid);
+		}
+		
+		return user;
 	}
 	
 	@Override

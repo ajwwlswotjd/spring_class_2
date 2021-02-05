@@ -34,16 +34,31 @@
 		<beans:property name="templateEngine" ref="templateEngine"></beans:property>
 		<beans:property name="characterEncoding" value="UTF-8"></beans:property>
 		<beans:property name="order" value="1"></beans:property>
+		
 	</beans:bean>
-	
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485760"></beans:property>
-	</beans:bean>
-	
-	<default-servlet-handler/>
 	
 	<!-- Controller, Repositorty, Service 등을 검색할 패키지 -->
 	<context:component-scan base-package="net.gondr.controller" />
 	
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="10485760"></beans:property>	
+	</beans:bean>
+	<default-servlet-handler/>
+	
+	<!-- 인터셉터 등록 -->
+	<beans:bean id="authInter" class="net.gondr.interceptor.AuthInter"></beans:bean>
+	<beans:bean id="nonAuthInter" class="net.gondr.interceptor.NonAuthInter"></beans:bean>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/register"/>
+			<beans:ref bean="nonAuthInter"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/board/write"/>
+			<beans:ref bean="authInter"/>
+		</interceptor>
+	</interceptors>
 </beans:beans>
 

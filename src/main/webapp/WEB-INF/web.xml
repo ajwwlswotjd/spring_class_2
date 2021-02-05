@@ -55,4 +55,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     	<filter-name>encodingFilter</filter-name>
     	<url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+    	<filter-name>lucy</filter-name>
+    	<filter-class>com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter</filter-class>	
+    </filter>
+    <filter-mapping>
+    	<filter-name>lucy</filter-name>
+    	<url-pattern>/board/write</url-pattern>
+    </filter-mapping>
 </web-app>
