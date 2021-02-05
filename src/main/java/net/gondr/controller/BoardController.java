@@ -1,5 +1,7 @@
 package net.gondr.controller;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -20,6 +22,7 @@ import com.nhncorp.lucy.security.xss.LucyXssFilter;
 import com.nhncorp.lucy.security.xss.XssSaxFilter;
 
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.Criteria;
 import net.gondr.domain.UploadResponse;
 import net.gondr.domain.UserVO;
 import net.gondr.service.BoardService;
@@ -42,6 +45,13 @@ public class BoardController {
 	private UserService user_service;
 	
 	private BoardValidator validator = new BoardValidator();
+	
+	@RequestMapping(value="list", method=RequestMethod.GET)
+	public String viewList(Criteria criteria, Model model) {
+		List<BoardVO> list = service.getArticleList( (criteria.getPage() - 1) * criteria.getPerPageNum(), criteria.getPerPageNum());
+		model.addAttribute("list", list); //리스트에 더해서
+		return "board/list";
+	}
 	
 	@RequestMapping(value="" , method=RequestMethod.GET)
 	public String viewListPage(  ) {
