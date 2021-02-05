@@ -21,7 +21,7 @@
 	</delete>
 	
 	<select id="view" resultType="BoardVO">
-		SELECT * FROM `spring_boards` WHERE `id` = #{ id } 
+		SELECT board.*, user.name, user.img, user.level FROM `spring_boards` AS board, `spring_users` AS user WHERE id = #{id} AND userid = writer 
 	</select>
 	
 	<select id="cnt" resultType="Integer">

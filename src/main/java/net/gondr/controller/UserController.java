@@ -1,14 +1,21 @@
 package net.gondr.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import net.gondr.domain.LoginDTO;
@@ -26,6 +33,17 @@ public class UserController {
 	
 	@Autowired
 	private UserService service;
+	
+	@RequestMapping(value="profile/{file:.+}" , method=RequestMethod.GET)
+	@ResponseBody
+	public byte[] getUserProfile( @PathVariable String file ) throws IOException {
+		
+		String uploadPath = context.getRealPath("/WEB-INF/upload");
+		File profile = new File( uploadPath + File.separator + file );
+		FileInputStream in = new FileInputStream( profile );
+		
+		return IOUtils.toByteArray( in );
+	}
 	
 	
 	@RequestMapping( value="logout" , method=RequestMethod.GET )

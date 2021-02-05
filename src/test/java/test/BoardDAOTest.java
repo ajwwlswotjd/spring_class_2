@@ -27,7 +27,7 @@ public class BoardDAOTest {
 
 	//@Test
 	public void readBoard() {
-		BoardVO data = dao.view(1);
+		BoardVO data = dao.view(2);
 		System.out.println(data.getTitle());
 		System.out.println(data.getContent());
 	}

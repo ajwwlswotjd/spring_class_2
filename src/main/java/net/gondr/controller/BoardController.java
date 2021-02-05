@@ -23,6 +23,7 @@ import net.gondr.domain.BoardVO;
 import net.gondr.domain.UploadResponse;
 import net.gondr.domain.UserVO;
 import net.gondr.service.BoardService;
+import net.gondr.service.UserService;
 import net.gondr.util.FileUtil;
 import net.gondr.util.MediaUtil;
 import net.gondr.validator.BoardValidator;
@@ -37,6 +38,9 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
+	@Autowired
+	private UserService user_service;
+	
 	private BoardValidator validator = new BoardValidator();
 	
 	@RequestMapping(value="" , method=RequestMethod.GET)
@@ -49,7 +53,8 @@ public class BoardController {
 	public String viewArticle( @PathVariable Integer id , Model model ) {
 		
 		BoardVO board = service.viewArticle(id);
-		model.addAttribute(board);
+		System.out.println(board);
+		model.addAttribute("board" , board);
 	
 		return "board/view";
 	}
@@ -72,6 +77,10 @@ public class BoardController {
 		board.setTitle(filtered_title);
 		
 		service.writeArticle(board);
+		user_service.increaseExp( user.getUserid() );
+		
+		session.setAttribute("user",  user_service.getUserInfo( user.getUserid() ) );
+		 
 		return ("redirect:/board");
 	}
 
