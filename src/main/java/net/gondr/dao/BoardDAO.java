@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.gondr.domain.BoardVO;
 import net.gondr.domain.Criteria;
+import net.gondr.domain.ReplyVO;
 
 public interface BoardDAO {
 	

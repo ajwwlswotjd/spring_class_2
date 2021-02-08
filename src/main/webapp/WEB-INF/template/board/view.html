@@ -30,15 +30,43 @@
 			</div>
 		</div>
 			
-		<div class="row mt-3">
-			<div class="col-10 d-flex align-items-center p-2" style="border : 1px solid #ddd;">
-				<img src="/user/profile/werhujiowerhuioew.34590456890456" width="50" height="50">
-				<p class="mb-0 ml-1 col-2">정재성인척하는정재성</p>
+		<!-- 댓글  리스트-->
+		<div class="row mt-3 col-10 offset-1">
+		<!-- 댓글  리스트-->
+		
+			<!-- 댓글 돔 -->		
+			<div class="row col-4 py-4" style="border : 1px solid #ddd; border-radius:0.25rem;">
+				<div class="col-12 d-flex align-items-center">
+					<img src="/user/profile/werhujiowerhuioew.34590456890456" width="50" height="50">
+					<div class="col-10">
+						<p class="mb-0" style="font-weight: 700; font-size:16px;">댓글 작성자</p>
+						<p class="mb-0" style="font-weight: 500; font-size:15px;">ajwwlswotjd@naver.com</p>
+					</div>
+				</div>
+				
+				<p class="mt-2 mb-0 col-12">댓글작성댓글작성댓글작성댓글작성댓글작성댓글작성댓글작성</p>
+				
+				<div class="col-12 text-right pr-0 mt-2">
+					<a class="btn btn-sm btn-outline-danger" href="#">댓글 삭제</a>
+				</div>
 			</div>
+			<!-- 댓글 돔 -->
+			
+		<!-- 댓글  리스트-->
 		</div>
+		<!-- 댓글  리스트-->
+		
+		<!-- 댓글작성  -->
+		<form class="row form-inline mt-3" th:action="@{ '/board/reply/' + ${ board.id } }" method="POST">
+			<div class="form-group col-10 offset-1 d-flex align-items-center justify-content-end">
+				<input class="form-control mr-sm-2 col-4" type="text" placeholder="댓글을 입력해주세요.">
+      			<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">작성</button>
+			</div>
+		</form>
+		<!-- 댓글작성  -->
 		
 		<div class="row mt-3">
-			<div class="col-10 offset-1 text-right offset-1">
+			<div class="col-10 text-right offset-1">
 				<a href="/board/list" class="btn btn-primary">목록보기</a>
 				<a th:href="@{ '/board/update/' + ${ board.id } }" class="btn btn-info" th:if="@{ ${qhsdls} }">수정</a>
 				<a th:href="@{ '/board/delete/' + ${ board.id } }" class="btn btn-danger" th:if="@{ ${qhsdls} }">삭제</a>
