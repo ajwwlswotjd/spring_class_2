@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/layout :: head"></head>
+
+<body>
+	<header th:replace="/fragments/layout :: header"></header>
+	<div class="container">
+		<div class="row">
+			<div class="col-10 offset-1">
+				<h2>코드북 게시판</h2>
+				
+				<div class="row">
+					<div class="col-12 text-right">
+						<form class="form-inline justify-content-end" id="searchForm">
+							<input type="text" class="form-control mb-2 mr-sm-2" id="keyword" placeholder="검색어를 입력하세요">
+							<button type="button" id="btnSearch" class="btn btn-primary mb-2">검색</button>
+						</form>
+					</div>
+				</div>
+				
+				<table class="table table-striped">
+					<tr>
+						<th>글번호</th>
+						<th width="50%">글제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+					</tr>
+					<tr th:each="board : ${list}">
+						<td th:text="${board.id}">글번호</td>
+						<td><a th:href="@{'/board/view/' + ${board.id} }" th:text="${board.title}">글제목</a></td>
+						<td th:text="${board.writer}">작성자</td>
+						<td th:text="${board.writeDate}">작성일</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-10 offset-1 text-right">
+				<a href="/board/write" class="btn btn-primary">글작성</a>
+			</div> 
+		</div>
+		
+		<nav><ul class="pagination justify-content-center">
+			<!-- <li th:if="${ c.prev }" class="page-item">
+				<a class="page-link" th:href="@{ '/board/list?page=' + ${ c.start - 1 }} + ${ c.keyword ? '&keyword=' + c.keyword : '' }">&laquo;</a>
+			</li> -->
+			
+			<th:block th:each="i : ${ #numbers.sequence( c.start , c.end ) }">
+				<li class="page-item">
+					<a class="page-link" th:href="@{ '/board/list?page=' + ${ i } + ${ c.keyword != null ? '&keyword=' + c.keyword : '' }}" th:text="${ i }"></a>
+				</li>
+			</th:block>
+			
+			<!-- <li th:if="${ c.next }" class="page-item">
+				<a class="page-link" th:href="@{ '/board/list?page=' + ${ c.end + 1 }} + ${ c.keyword ? '&keyword=' + c.keyword : '' }">&raquo;</a>
+			</li> -->
+			
+		</ul></nav>
+		
+	</div>
+	<footer th:replace="/fragments/layout :: footer"></footer>
+	<script>
+		
+		window.addEventListener("load",()=>{
+			document.querySelector("#btnSearch").addEventListener("click",(e)=>{
+				let text = keyword.value;
+				location.href = `/board/list?keyword=${ text }`;
+			});
+			
+			document.querySelector("#searchForm").addEventListener("submit" , (e)=>{
+				e.preventDefault();
+				document.querySelector("#btnSearch").click();				
+				return false;
+			});
+		});
+	
+	</script>
+</body>
+</html>

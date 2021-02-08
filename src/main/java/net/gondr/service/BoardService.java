@@ -3,6 +3,7 @@ package net.gondr.service;
 import java.util.List;
 
 import net.gondr.domain.BoardVO;
+import net.gondr.domain.Criteria;
 
 public interface BoardService {
 
@@ -12,5 +13,7 @@ public interface BoardService {
 	public void updateArticle( BoardVO board );
 	public void deleteArticle( Integer id );
 	public Integer countArticle();
+	public List<BoardVO> getCriteriaList( Criteria c );
+	public Integer countCriteria( Criteria c );
 	
 }

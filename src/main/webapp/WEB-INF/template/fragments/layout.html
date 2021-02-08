@@ -22,17 +22,14 @@
 		<div class="collapse navbar-collapse" id="navbarContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="/">Home</a>
+					<a class="nav-link" href="/">메인페이지</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/code">CodeBook</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/board">FreeBoard</a>
+					<a class="nav-link" href="/board/list">글 목록</a>
 				</li>
 			</ul>
 			
-			<form class="form-inline my-2 my-lg-0" action="/user/login" method="POST" th:if="${ session.user == null }">
+			<form class="form-inline my-2 my-lg-0" action="/user/login" method="POST" th:if="${ session.user == null }" th:object="${loginDTO}">
 				<input class="form-control mr-sm-2" type="text" placeholder="회원아이디" name="userid">
 				<input class="form-control mr-sm-2" type="password" placeholder="비밀번호" name="password">
 				<button class="btn btn-outline-success my-2 mr-2 my-sm-0" type="submit">로그인</button>

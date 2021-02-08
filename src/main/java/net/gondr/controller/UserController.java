@@ -2,6 +2,7 @@ package net.gondr.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.servlet.ServletContext;
@@ -39,10 +40,23 @@ public class UserController {
 	public byte[] getUserProfile( @PathVariable String file ) throws IOException {
 		
 		String uploadPath = context.getRealPath("/WEB-INF/upload");
-		File profile = new File( uploadPath + File.separator + file );
-		FileInputStream in = new FileInputStream( profile );
+		String defaultImage = "nouser.png";
 		
-		return IOUtils.toByteArray( in );
+		try {
+			
+			File profile = new File( uploadPath + File.separator + file );
+			FileInputStream in = new FileInputStream( profile );
+			
+			return IOUtils.toByteArray( in );
+			
+		} catch (FileNotFoundException e) {
+			
+			File profile = new File( uploadPath + File.separator + defaultImage );
+			FileInputStream in = new FileInputStream( profile );
+			return IOUtils.toByteArray( in );
+			
+		}
+		
 	}
 	
 	

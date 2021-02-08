@@ -46,10 +46,27 @@ public class BoardController {
 	
 	private BoardValidator validator = new BoardValidator();
 	
+	@RequestMapping( value="delete/{id}" , method=RequestMethod.GET )
+	public String deleteBoard( HttpSession session , @PathVariable int id ) {
+		
+		BoardVO board = service.viewArticle(id);
+		UserVO user = (UserVO) session.getAttribute("user");
+		if(board == null || user == null) return ("redirect:/board/list");
+		if( board.getWriter().equals( user.getUserid() ) ) {
+			service.deleteArticle(id);
+		}
+		return ("redirect:/board/list");
+	}
+	
 	@RequestMapping(value="list", method=RequestMethod.GET)
 	public String viewList(Criteria criteria, Model model) {
-		List<BoardVO> list = service.getArticleList( (criteria.getPage() - 1) * criteria.getPerPageNum(), criteria.getPerPageNum());
+//		List<BoardVO> list = service.getArticleList( (criteria.getPage() - 1) * criteria.getPerPageNum(), criteria.getPerPageNum());
+		List<BoardVO> list = service.getCriteriaList( criteria );
+		Integer cnt = service.countCriteria( criteria );
+		criteria.Calculate(cnt);
+		
 		model.addAttribute("list", list); //리스트에 더해서
+		model.addAttribute("c" , criteria);
 		return "board/list";
 	}
 	
@@ -60,11 +77,17 @@ public class BoardController {
 	}
 	
 	@RequestMapping( value="view/{id}" , method=RequestMethod.GET )
-	public String viewArticle( @PathVariable Integer id , Model model ) {
+	public String viewArticle( @PathVariable Integer id , Model model , HttpSession session ) {
 		
 		BoardVO board = service.viewArticle(id);
-		System.out.println(board);
+		UserVO user = (UserVO)session.getAttribute("user");
+		
+		boolean qhsdls = false;
+		if( board == null ) return ("redirect:/board/list");
+		if(user != null) qhsdls = board.getWriter().equals( user.getUserid() );
+		
 		model.addAttribute("board" , board);
+		model.addAttribute("qhsdls" , qhsdls);
 	
 		return "board/view";
 	}
@@ -88,10 +111,9 @@ public class BoardController {
 		
 		service.writeArticle(board);
 		user_service.increaseExp( user.getUserid() );
-		
 		session.setAttribute("user",  user_service.getUserInfo( user.getUserid() ) );
 		 
-		return ("redirect:/board");
+		return ("redirect:/board/list");
 	}
 
 	
@@ -99,7 +121,7 @@ public class BoardController {
 	public String viewWritePage( Model model ) {
 		
 		model.addAttribute("BoardVO" , new BoardVO());
-		
+		model.addAttribute("updateMod" , false);
 		return "board/write";
 	}
 	
@@ -115,7 +137,7 @@ public class BoardController {
 			String name = file.getOriginalFilename(); // 원본 이름
 			String ext = name.substring( name.lastIndexOf(".") + 1 );
 			if(MediaUtil.getMediaType(ext) == null) {
-				throw  new Exception("올바르지 않은 파일 형식");
+				throw new Exception("올바르지 않은 파일 형식");
 			}
 			
 			String upFile = FileUtil.uploadFile(uploadPath, name, file.getBytes());
@@ -141,6 +163,53 @@ public class BoardController {
 		}
 		
 		return upResponse;
+	}
+	
+	@RequestMapping(value="update/{id}" , method=RequestMethod.GET)
+	public String viewUpdatePage( HttpSession session , @PathVariable int id , Model model ) {
+		
+		BoardVO board = service.viewArticle(id);
+		UserVO user = (UserVO)session.getAttribute("user");
+
+		if( user == null || board == null) return ("redirect:/board/list");
+		if(!board.getWriter().equals( user.getUserid() )) {
+			return ("redirect:/board/list");
+		}
+		
+		model.addAttribute("BoardVO" , board);
+		model.addAttribute("updateMod" , true);
+	
+		return "board/write";
+	}
+	
+	@RequestMapping(value="update/{id}" , method=RequestMethod.POST)
+	public String updateProcess( BoardVO board , HttpSession session , Errors errors, @PathVariable int id) {
+
+		System.out.println(board);
+		this.validator.validate(board, errors);
+		UserVO user = (UserVO)session.getAttribute("user");
+		if( user == null || board == null) return ("redirect:/board/list");
+		
+		BoardVO id_board = (BoardVO)service.viewArticle(id); // URL 에 심어놓은 id 에 맞는 Board
+		if(id_board == null) return ("redirect:/board/list"); // 없으면 잘못된 URL
+		
+		if( !(id_board.getWriter().equals( user.getUserid() )) ) return ("redirect:/board/list");
+		// id에 심은 글의 작성자랑 세션사용자의 아이디가 같은지 판단
+		
+		board.setWriter( user.getUserid() );
+		
+		LucyXssFilter filter = XssSaxFilter.getInstance("lucy-xss-sax.xml");
+		String filtered_content = filter.doFilter(board.getContent());
+		board.setContent(filtered_content);
+		
+		String filtered_title = filter.doFilter(board.getTitle());
+		board.setTitle(filtered_title);
+		System.out.println(board);
+		
+//		user_service.increaseExp( user.getUserid() );
+//		session.setAttribute("user",  user_service.getUserInfo( user.getUserid() ) );
+		service.updateArticle(board);	
+		return ("redirect:/board/view/"+board.getId());
 	}
 	
 }

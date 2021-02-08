@@ -29,12 +29,24 @@
 				</div>
 			</div>
 		</div>
+			
 		<div class="row mt-3">
-			<div class="col-10 offset-1 text-right">
+			<div class="col-10 d-flex align-items-center p-2" style="border : 1px solid #ddd;">
+				<img src="/user/profile/werhujiowerhuioew.34590456890456" width="50" height="50">
+				<p class="mb-0 ml-1 col-2">정재성인척하는정재성</p>
+			</div>
+		</div>
+		
+		<div class="row mt-3">
+			<div class="col-10 offset-1 text-right offset-1">
 				<a href="/board/list" class="btn btn-primary">목록보기</a>
+				<a th:href="@{ '/board/update/' + ${ board.id } }" class="btn btn-info" th:if="@{ ${qhsdls} }">수정</a>
+				<a th:href="@{ '/board/delete/' + ${ board.id } }" class="btn btn-danger" th:if="@{ ${qhsdls} }">삭제</a>
 			</div> 
 		</div>
 	</div>
 	<footer th:replace="/fragments/layout :: footer"></footer>
+	<link rel="stylesheet" href="/css/prism.css">
+	<script src ="/js/prism.js"></script>
 </body>
 </html>

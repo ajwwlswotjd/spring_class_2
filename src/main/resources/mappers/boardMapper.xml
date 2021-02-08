@@ -4,12 +4,21 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="net.gondr.mappers.BoardMapper">
+	
+	<sql id="search">
+		<if test="keyword != null" >
+			WHERE title LIKE CONCAT( '%' , #{ keyword } , '%' ) OR content LIKE CONCAT( '%' , #{ keyword } , '%' )
+		</if>		
+	</sql>
+
 	<insert id="write">
 		INSERT INTO `spring_boards`(`title`, `content`, `writer`, `writeDate`) VALUES ( #{ title } , #{ content } , #{ writer } , NOW() )
 	</insert>
 	
 	<select id="list" resultType="BoardVO">
-		SELECT * FROM `spring_boards` ORDER BY `id` DESC LIMIT #{start}, #{end}
+		SELECT * FROM `spring_boards` 
+		<include refid="search"></include>
+		ORDER BY `id` DESC LIMIT #{ pageStart }, #{ perPageNum }
 	</select>
 	
 	<update id="update">
@@ -21,10 +30,11 @@
 	</delete>
 	
 	<select id="view" resultType="BoardVO">
-		SELECT board.*, user.name, user.img, user.level FROM `spring_boards` AS board, `spring_users` AS user WHERE id = #{id} AND userid = writer 
+		SELECT board.*, user.name, user.img, user.level FROM `spring_boards` AS board, `spring_users` AS user WHERE board.id = #{id} AND user.userid = board.writer 
 	</select>
 	
 	<select id="cnt" resultType="Integer">
 		SELECT count(*) FROM `spring_boards`
+		<include refid="search"></include>
 	</select>
 </mapper>

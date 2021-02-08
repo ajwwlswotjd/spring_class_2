@@ -22,13 +22,14 @@ public class Criteria {
 		this.next = true;
 	}
 	
+	// 전체 글의 갯수를 받아서 페이지네이션 제작에 필요한 변수를 채운다.
 	public void Calculate( Integer total ) {
 		this.totalPage = (int) Math.ceil( (double)total / this.perPageNum );
 		if( this.totalPage == 0 ) this.totalPage = 1;
 		this.end = (int)Math.ceil( (double)this.page / this.perChapterNum ) * this.perChapterNum;
 		this.start = this.end - this.perChapterNum + 1;
 		
-		if( this.end > this.totalPage ) {
+		if( this.end >= this.totalPage ) {
 			this.end = this.totalPage;
 			this.next = false;
 		}
@@ -36,6 +37,10 @@ public class Criteria {
 			this.prev = false;
 		}
 			
+	}
+	
+	public Integer getPageStart() {
+		return (this.page - 1) * this.perPageNum; 
 	}
 
 	public Integer getPage() {
